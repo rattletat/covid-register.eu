@@ -47,7 +47,7 @@ def _update_virtualenv(domain):
 def _create_or_update_dotenv(domain):
     append(".envrc", "DJANGO_DEPLOY=y")
     append(".envrc", f"SITENAME={domain}")
-    current_contents = run("cat .envrc")
+    current_contents = run("cat .env")
     if "DJANGO_SECRET_KEY" not in current_contents:
         choices = "abcdefghijklmnopqrstuvwxyz123456789"
         new_secret = "".join(random.SystemRandom().choices(choices, k=50))
