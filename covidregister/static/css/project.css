@@ -1,0 +1,37 @@
+/* These styles are generated from project.scss. */
+
+.alert-debug {
+    color: black;
+    background-color: white;
+    border-color: #d6e9c6;
+}
+
+.alert-error {
+    color: #b94a48;
+    background-color: #f2dede;
+    border-color: #eed3d7;
+}
+
+/* /1* dal bootstrap css fix *1/ */
+.select2-container {
+    width: 100% !important;
+    min-width: 5vw !important;
+}
+/* /1* django-addanother bootstrap css fix *1/ */
+/* .related-widget-wrapper { */
+/*     padding-right: 16px; */
+/*     position: relative; */
+/* } */
+/* .related-widget-wrapper-link { */
+/*     position: absolute; */
+/*     top: 3px; */
+/*     right: 0px; */
+/* } */
+
+span.select2-selection.select2-selection--single {
+    height: 38px;
+}
+
+span.select2-selection__placeholder {
+    font-size: 16px;
+}

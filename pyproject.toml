@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "covidregister"
+version = "0.1.0"
+description = "A page for physicians to register COVID-19 patients"
+authors = ["Michael Brauweiler <michael.brauweiler@posteo.de>"]
+license = "UNLICENSE"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django-environ = "^0.4.5"
+django = "^3.0.6"
+argon2-cffi = "^20.1.0"
+django-allauth = "^0.41.0"
+django-crispy-forms = "^1.9.1"
+whitenoise = "^5.1.0"
+psycopg2 = "^2.8.5"
+Django-model-utils = "^4.0.0"
+django-formtools = "^2.2"
+django-autocomplete-light = "^3.5.1"
+
+[tool.poetry.dev-dependencies]
+django-debug-toolbar = "^2.2"
+pytest = "^5.4.2"
+pytest-factoryboy = "^2.0.3"
+flake8 = "^3.8.1"
+black = "^19.10b0"
+isort = "^4.3.21"
+ipython = "^7.14.0"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
