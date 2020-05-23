@@ -51,7 +51,7 @@ def _create_or_update_dotenv(domain):
     if "DJANGO_SECRET_KEY" not in current_contents:
         choices = "abcdefghijklmnopqrstuvwxyz123456789"
         new_secret = "".join(random.SystemRandom().choices(choices, k=50))
-        append(".envrc", f"DJANGO_SECRET_KEY={new_secret}")
+        append(".env", f"DJANGO_SECRET_KEY={new_secret}")
 
 
 def _update_static_files():
