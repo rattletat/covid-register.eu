@@ -1,0 +1,12 @@
+[Unit]
+Description=Redis worker for xyz321.de
+
+[Service]
+Restart=on-failure
+User=HOSTNAME
+WorkingDirectory=/home/USER/sites/DOMAIN
+
+ExecStart=/home/USER/.poetry/bin/poetry run ./manage.py rqworker
+
+[INSTALL]
+WantedBy=multi-user.target
