@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 
 import environ
 
-ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
+ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 APPS_DIR = ROOT_DIR / "covidregister"
 env = environ.Env()
