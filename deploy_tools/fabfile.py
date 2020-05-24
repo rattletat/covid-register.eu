@@ -3,9 +3,10 @@ from fabric.contrib.files import append, exists
 from fabric.api import cd, env, local, run, sudo, settings, hide
 
 env.use_ssh_config = True
+CONFIG_PRODUCTION = "config.settings.production"
 
 REPO_URL = "https://github.com/rattletat/covid-register.eu.git"
-POETRY = "$HOME/.poetry/bin/poetry "
+POETRY = f"DJANGO_SETTINGS_MODULE={CONFIG_PRODUCTION} python3 -m poetry "
 
 
 def deploy(domain):
@@ -45,13 +46,9 @@ def _update_virtualenv(domain):
 
 
 def _create_or_update_dotenv(domain):
-    append(".envrc", "DJANGO_DEPLOY=y")
-    append(".envrc", f"SITENAME={domain}")
-    current_contents = run("cat .env")
-    if "DJANGO_SECRET_KEY" not in current_contents:
-        choices = "abcdefghijklmnopqrstuvwxyz123456789"
-        new_secret = "".join(random.SystemRandom().choices(choices, k=50))
-        append(".env", f"DJANGO_SECRET_KEY={new_secret}")
+    run("set -a")
+    run("source .env")
+    run("set +a")
 
 
 def _update_static_files():
