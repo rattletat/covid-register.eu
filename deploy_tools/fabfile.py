@@ -6,7 +6,11 @@ env.use_ssh_config = True
 CONFIG_PRODUCTION = "config.settings.production"
 
 REPO_URL = "https://github.com/rattletat/covid-register.eu.git"
-POETRY = f"DJANGO_SETTINGS_MODULE={CONFIG_PRODUCTION} python3 -m poetry "
+ENV_VARS = [
+    f"DJANGO_SETTINGS_MODULE={CONFIG_PRODUCTION}",
+    "DJANGO_READ_DOT_ENV_FILE=y",
+]
+POETRY = " ".join(ENV_VARS) + " python3 -m poetry "
 
 
 def deploy(domain):
