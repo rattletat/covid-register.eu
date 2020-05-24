@@ -22,16 +22,16 @@ if READ_DOT_ENV_FILE:
 
 LANGUAGES = (
     ('en', _('English')),
-    ('de', _('German')),
+    # ('de', _('German')),
 )
 DEBUG = env.bool("DJANGO_DEBUG", False)
 TIME_ZONE = "UTC"
-LANGUAGE_CODE = "de-de"
+LANGUAGE_CODE = "en"
 SITE_ID = 1
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-LOCALE_PATHS = [str(ROOT_DIR / "locale")]
+# LOCALE_PATHS = [str(ROOT_DIR / "locale")]
 
 # DATABASES
 # -------------------------------------------------------------------
@@ -117,7 +117,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.locale.LocaleMiddleware",
+    # "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
