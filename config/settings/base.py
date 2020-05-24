@@ -36,7 +36,7 @@ USE_TZ = True
 # DATABASES
 # -------------------------------------------------------------------
 
-DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///coronaregister")}
+DATABASES = {"default": env.db("DATABASE_URL", default="postgres:///covidregister")}
 DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 # URLS

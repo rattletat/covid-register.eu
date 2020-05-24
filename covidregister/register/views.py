@@ -13,7 +13,7 @@ class PatientListView(LoginRequiredMixin, ListView):
 
     template_name = "list.html"
     model = Patient
-    paginate_by = 4
+    paginate_by = 10
 
     def get_queryset(self):
         return Patient.objects.filter(doctor=self.request.user)
@@ -64,7 +64,9 @@ class PatientUpdateView(LoginRequiredMixin, UpdateView):
         obj = get_object_or_404(Patient, pk=self.object.pk)
         if self.request.POST:
             data["illnesses"] = IllnessInlineFormSet(self.request.POST, instance=obj)
-            data["medication"] = MedicationInlineFormSet(self.request.POST, instance=obj)
+            data["medication"] = MedicationInlineFormSet(
+                self.request.POST, instance=obj
+            )
         else:
             data["illnesses"] = IllnessInlineFormSet(instance=obj)
             data["medication"] = MedicationInlineFormSet(instance=obj)
@@ -100,7 +102,9 @@ class DiseaseAutocomplete(LoginRequiredMixin, autocomplete.Select2QuerySetView):
         qs = Disease.objects.all()
 
         if self.q:
-            qs = qs.filter(code__istartswith=self.q).union(qs.filter(name__contains=self.q))
+            qs = qs.filter(code__istartswith=self.q).union(
+                qs.filter(name__contains=self.q)
+            )
 
         return qs
 
@@ -110,6 +114,8 @@ class DrugAutocomplete(LoginRequiredMixin, autocomplete.Select2QuerySetView):
         qs = Drug.objects.all()
 
         if self.q:
-            qs = qs.filter(code__istartswith=self.q).union(qs.filter(name__contains=self.q))
+            qs = qs.filter(code__istartswith=self.q).union(
+                qs.filter(name__contains=self.q)
+            )
 
         return qs

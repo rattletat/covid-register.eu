@@ -6,7 +6,7 @@ from model_utils.models import TimeStampedModel, TimeFramedModel
 
 
 class Patient(TimeStampedModel):
-    id = models.CharField("Patient ID", primary_key=True, max_length=10)
+    identifer = models.CharField("Patient ID", max_length=10)
     birthday = models.DateField("Date of birth")
     doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 

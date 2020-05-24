@@ -1,5 +1,18 @@
 /* These styles are generated from project.scss. */
 
+/* Decrease navbar height */
+.navbar {
+    padding-top: 0.25rem; /* 0px does not look good on small screens */
+    padding-bottom: 0.25rem;
+    font-size: 1em; /* Just because I am using big size font */
+    line-height: 1em;
+}
+
+/* Remove underline from logo */
+.navbar-brand a {
+    text-decoration: none;
+}
+
 .alert-debug {
     color: black;
     background-color: white;
@@ -35,3 +48,26 @@ span.select2-selection.select2-selection--single {
 span.select2-selection__placeholder {
     font-size: 16px;
 }
+
+/* Logo */
+/* #navigation { */
+/*     background-color: rgba(72, 8, 111, 0.4); */
+/*     border: 0 none; */
+/*     margin: 0; */
+/* } */
+
+/* .navbar-brand { */
+/*     padding: 0; */
+/* } */
+
+.img-responsive {
+    /* display: block; */
+    height: 55px;
+    width: auto;
+    padding-bottom: 5px;
+    margin-right: 15px;
+}
+
+/* body { */
+/*     background: #eefffe !important; */
+/* } */
