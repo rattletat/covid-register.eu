@@ -1,10 +1,17 @@
 /* These styles are generated from project.scss. */
 
+.img-responsive {
+    height: 55px;
+    width: 55px;
+    padding-bottom: 5px;
+    margin-right: 15px;
+}
+
 /* Decrease navbar height */
 .navbar {
     padding-top: 0.25rem; /* 0px does not look good on small screens */
     padding-bottom: 0.25rem;
-    font-size: 1em; /* Just because I am using big size font */
+    font-size: 1.2em; /* Just because I am using big size font */
     line-height: 1em;
 }
 
@@ -59,14 +66,6 @@ span.select2-selection__placeholder {
 /* .navbar-brand { */
 /*     padding: 0; */
 /* } */
-
-.img-responsive {
-    /* display: block; */
-    height: 55px;
-    width: auto;
-    padding-bottom: 5px;
-    margin-right: 15px;
-}
 
 /* body { */
 /*     background: #eefffe !important; */
