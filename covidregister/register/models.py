@@ -13,15 +13,18 @@ class Patient(StatusModel, TimeStampedModel):
         ("recovered", _("Recovered")),
         ("death", _("Death")),
     )
+    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+
     identifer = models.CharField("Patient ID", max_length=10)
     sex = models.PositiveSmallIntegerField(
-        choices=[(1, "Female"), (2, "Male"), (3, "Other")]
+        choices=[(1, "Female"), (2, "Male"), (3, "Other")], null=True, blank=True,
     )
     birth_year = models.PositiveSmallIntegerField(
         "Year of birth",
         validators=[MinValueValidator(1900), MaxValueValidator(datetime.now().year)],
+        null=True,
+        blank=True,
     )
-    doctor = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 
     def __str__(self):
         return f"Patient {self.identifer}"
@@ -50,14 +53,20 @@ class Medication(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     drug = models.ForeignKey(Drug, on_delete=models.PROTECT)
 
-    start = models.DateField("Start of medication")
+    start = models.DateField("Start of medication", null=True, blank=True)
     end = models.DateField("End of medication", null=True, blank=True)
 
     dosage = models.PositiveSmallIntegerField()
-    dosage_unit = models.PositiveSmallIntegerField(choices=MASS)
-    dosage_form = models.PositiveSmallIntegerField(choices=DOSAGE_FORM)
-    count = models.PositiveSmallIntegerField("Quantity")
-    time_unit = models.PositiveSmallIntegerField("per", choices=TIME_UNIT)
+    dosage_unit = models.PositiveSmallIntegerField(
+        choices=MASS, null=True, blank=True
+    )
+    dosage_form = models.PositiveSmallIntegerField(
+        choices=DOSAGE_FORM, null=True, blank=True
+    )
+    count = models.PositiveSmallIntegerField("Quantity", null=True, blank=True)
+    time_unit = models.PositiveSmallIntegerField(
+        "per", choices=TIME_UNIT, null=True, blank=True
+    )
 
     class Meta:
         abstract = True
@@ -89,8 +98,10 @@ class PreexistingIllness(TimeStampedModel):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     disease = models.ForeignKey(Disease, models.PROTECT)
 
-    start = models.DateField("Start of symptoms")
-    severity = models.PositiveSmallIntegerField(choices=SEVERITY)
+    start = models.DateField("Start of symptoms", null=True, blank=True)
+    severity = models.PositiveSmallIntegerField(
+        choices=SEVERITY, null=True, blank=True
+    )
 
 
 class CovidIllness(TimeStampedModel):
@@ -101,11 +112,17 @@ class CovidIllness(TimeStampedModel):
     end = models.DateField("End of symptoms", null=True, blank=True)
 
     days_symptom_free = models.PositiveSmallIntegerField(
-        "Days symptom free", default=0
+        "Days symptom free", default=0, null=True, blank=True
     )
-    days_mild = models.PositiveSmallIntegerField("Days mild", default=0)
-    days_moderate = models.PositiveSmallIntegerField("Days moderate", default=0)
-    days_severe = models.PositiveSmallIntegerField("Days severe", default=0)
+    days_mild = models.PositiveSmallIntegerField(
+        "Days mild", default=0, null=True, blank=True
+    )
+    days_moderate = models.PositiveSmallIntegerField(
+        "Days moderate", default=0, null=True, blank=True
+    )
+    days_severe = models.PositiveSmallIntegerField(
+        "Days severe", default=0, null=True, blank=True
+    )
 
 
 class CovidTherapy(TimeStampedModel):
@@ -113,4 +130,8 @@ class CovidTherapy(TimeStampedModel):
 
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
 
-    therapy_form = models.PositiveSmallIntegerField(choices=THERAPY_FORM)
+    therapy_form = models.PositiveSmallIntegerField(
+        choices=THERAPY_FORM, null=True, blank=True
+    )
+    start = models.DateField("Start of therapy", null=True, blank=True)
+    end = models.DateField("End of therapy", null=True, blank=True)
