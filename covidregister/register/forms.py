@@ -189,6 +189,7 @@ class CovidTherapyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
+
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
@@ -231,7 +232,7 @@ CovidMedicationFormSet = inlineformset_factory(
     Patient, CovidMedication, form=CovidMedicationForm, can_delete=True, extra=1,
 )
 CovidTherapyFormSet = inlineformset_factory(
-    Patient, CovidTherapy, form=CovidTherapyForm, can_delete=True, extra=1, min_num=1
+    Patient, CovidTherapy, form=CovidTherapyForm, can_delete=True, extra=1
 )
 
 
