@@ -189,7 +189,6 @@ class CovidTherapyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
-
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
