@@ -44,7 +44,7 @@ class PreexistingIllnessForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Div(
-                    Field("DELETE", wrapper_class="col-md-2"),
+                Field("DELETE", wrapper_class="col-md-2"),
                 Row(
                     Field("disease", wrapper_class="col-md-6"),
                     Field("start", wrapper_class="col-md-3"),
@@ -95,7 +95,6 @@ class CovidIllnessForm(forms.ModelForm):
                     Field("days_moderate", wrapper_class="col-md-3"),
                     Field("days_severe", wrapper_class="col-md-3"),
                 ),
-                css_class="formset_div-{}".format(self.formtag_prefix),
             )
         )
 
@@ -105,6 +104,7 @@ class MedicationForm(forms.ModelForm):
         fields = (
             "drug",
             "start",
+            "end",
             "dosage",
             "dosage_form",
             "dosage_unit",
@@ -113,11 +113,77 @@ class MedicationForm(forms.ModelForm):
         )
         widgets = {
             "start": forms.widgets.DateInput(attrs={"type": "date"}),
+            "end": forms.widgets.DateInput(attrs={"type": "date"}),
             "drug": autocomplete.ModelSelect2(
                 url="register:drug-autocomplete",
                 attrs={"data-placeholder": "Search ATC system"},
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
+
+
+class PreexistingMedicationForm(MedicationForm):
+    exclude = ["end"]
+
+    class Meta(MedicationForm.Meta):
+        model = PreexistingMedication
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Div(
+                Row(
+                    Field("drug", wrapper_class="col-md-6"),
+                    Field("start", wrapper_class="col-md-6"),
+                ),
+                Row(
+                    Field("dosage", wrapper_class="col-md-2"),
+                    Field("dosage_unit", wrapper_class="col-md-3"),
+                    Field("count", wrapper_class="col-md-2"),
+                    Field("time_unit", wrapper_class="col-md-2"),
+                    Field("dosage_form", wrapper_class="col-md-3"),
+                    Field("DELETE"),
+                ),
+                css_class="formset_div-{}".format(self.formtag_prefix),
+            ),
+        )
+
+
+class CovidMedicationForm(MedicationForm):
+    class Meta(MedicationForm.Meta):
+        model = CovidMedication
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Div(
+                Field("DELETE"),
+                Row(
+                    Field("drug", wrapper_class="col-md-6"),
+                    Field("start", wrapper_class="col-md-3"),
+                    Field("end", wrapper_class="col-md-3"),
+                ),
+                Row(
+                    Field("dosage", wrapper_class="col-md-2"),
+                    Field("dosage_unit", wrapper_class="col-md-3"),
+                    Field("count", wrapper_class="col-md-2"),
+                    Field("time_unit", wrapper_class="col-md-2"),
+                    Field("dosage_form", wrapper_class="col-md-3"),
+                ),
+                css_class="formset_div-{}".format(self.formtag_prefix),
+            ),
+        )
+
+
+class CovidTherapyForm(forms.ModelForm):
+    class Meta:
+        model = CovidTherapy
+        fields = ("therapy_form", "start", "end")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -129,46 +195,6 @@ class MedicationForm(forms.ModelForm):
         self.helper.layout = Layout(
             Div(
                 Field("DELETE"),
-                Row(
-                    Field("drug", wrapper_class="col-md-6"),
-                    Field("start", wrapper_class="col-md-6"),
-                ),
-                Row(
-                    Field("dosage", wrapper_class="col-md-2"),
-                    Field("dosage_unit", wrapper_class="col-md-3"),
-                    Field("count", wrapper_class="col-md-2"),
-                    Field("time_unit", wrapper_class="col-md-2"),
-                    Field("dosage_form", wrapper_class="col-md-3"),
-                ),
-                css_class="formset_div-{}".format(formtag_prefix),
-            ),
-        )
-
-
-class PreexistingMedicationForm(MedicationForm):
-    class Meta(MedicationForm.Meta):
-        model = PreexistingMedication
-
-
-class CovidMedicationForm(MedicationForm):
-    class Meta(MedicationForm.Meta):
-        model = CovidMedication
-
-
-class CovidTherapyForm(forms.ModelForm):
-    class Meta:
-        model = CovidTherapy
-        fields = ("therapy_form","start","end")
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        formtag_prefix = re.sub("-[0-9]+$", "", kwargs.get("prefix", ""))
-
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.layout = Layout(
-            Div(
                 Row(
                     Field("therapy_form", wrapper_class="col-md-6"),
                     Field("start", wrapper_class="col-md-3"),
@@ -200,12 +226,13 @@ CovidIllnessFormSet = inlineformset_factory(
     can_delete=False,
     extra=1,
     min_num=1,
+    max_num=1,
 )
 CovidMedicationFormSet = inlineformset_factory(
     Patient, CovidMedication, form=CovidMedicationForm, can_delete=True, extra=1,
 )
 CovidTherapyFormSet = inlineformset_factory(
-    Patient, CovidTherapy, form=CovidTherapyForm, can_delete=True, extra=1
+    Patient, CovidTherapy, form=CovidTherapyForm, can_delete=True, extra=1, min_num=1
 )
 
 
@@ -230,18 +257,12 @@ class PatientForm(forms.ModelForm):
                     css_class="form-row",
                 ),
                 Fieldset("Pre-Existing Medication", Formset("medication")),
-                HTML("<br>"),
                 Fieldset("Pre-Existing Diseases", Formset("illnesses")),
-                HTML("<br>"),
                 Fieldset("COVID-19", Formset("covid")),
-                HTML("<br>"),
                 Fieldset(
                     "Medication during COVID infection", Formset("covid_medication")
                 ),
-                HTML("<br>"),
-                Fieldset(
-                    "Therapy during COVID infection", Formset("covid_therapy")
-                ),
+                Fieldset("Therapy during COVID infection", Formset("covid_therapy")),
                 HTML("<br>"),
                 Div(
                     HTML(
