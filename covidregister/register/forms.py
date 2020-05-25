@@ -44,11 +44,11 @@ class PreexistingIllnessForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Div(
-                Field("DELETE", wrapper_class="col-md-2"),
                 Row(
                     Field("disease", wrapper_class="col-md-6"),
                     Field("start", wrapper_class="col-md-3"),
                     Field("severity", wrapper_class="col-md-3"),
+                    Field("DELETE", wrapper_class="col-md-2"),
                 ),
                 css_class="formset_div-{}".format(self.formtag_prefix),
             )
@@ -162,7 +162,6 @@ class CovidMedicationForm(MedicationForm):
         super().__init__(*args, **kwargs)
         self.helper.layout = Layout(
             Div(
-                Field("DELETE"),
                 Row(
                     Field("drug", wrapper_class="col-md-6"),
                     Field("start", wrapper_class="col-md-3"),
@@ -174,6 +173,7 @@ class CovidMedicationForm(MedicationForm):
                     Field("count", wrapper_class="col-md-2"),
                     Field("time_unit", wrapper_class="col-md-2"),
                     Field("dosage_form", wrapper_class="col-md-3"),
+                    Field("DELETE"),
                 ),
                 css_class="formset_div-{}".format(self.formtag_prefix),
             ),
@@ -194,11 +194,11 @@ class CovidTherapyForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
             Div(
-                Field("DELETE"),
                 Row(
                     Field("therapy_form", wrapper_class="col-md-6"),
                     Field("start", wrapper_class="col-md-3"),
                     Field("end", wrapper_class="col-md-3"),
+                    Field("DELETE"),
                 ),
                 css_class="formset_div-{}".format(formtag_prefix),
             ),

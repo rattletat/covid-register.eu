@@ -128,7 +128,7 @@ class CovidIllness(TimeStampedModel):
 class CovidTherapy(TimeStampedModel):
     THERAPY_FORM = Choices((1, "ventilator", _("Ventilator")))
 
-    patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
 
     therapy_form = models.PositiveSmallIntegerField(
         choices=THERAPY_FORM, null=True, blank=True
