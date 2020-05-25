@@ -1,8 +1,7 @@
 /* These styles are generated from project.scss. */
 
-.img-responsive {
-    height: 55px;
-    width: 55px;
+.navbar-brand a img{
+    width:50px;
     padding-bottom: 5px;
     margin-right: 15px;
 }
