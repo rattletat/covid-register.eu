@@ -192,8 +192,8 @@ FIXTURE_DIRS = (str(APPS_DIR / "fixtures"),)
 # -------------------------------------------------------------------
 
 EMAIL_BACKEND = env(
-    # "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
-    "DJANGO_EMAIL_BACKEND", default='django.core.mail.backends.console.EmailBackend'
+    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+    # "DJANGO_EMAIL_BACKEND", default='django.core.mail.backends.console.EmailBackend'
 )
 EMAIL_TIMEOUT = 5
 
