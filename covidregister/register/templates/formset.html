@@ -29,10 +29,9 @@
 
 <script type="text/javascript">
     $('.formset_div-{{ formset.prefix }}').formset({
-        addText: 'add another',
+        addText: 'add',
         deleteText: 'remove',
         prefix: '{{ formset.prefix }}',
-        hideLastAddForm: true
     });
 </script>
 {{ formset.media }}

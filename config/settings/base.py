@@ -66,7 +66,8 @@ THIRD_PARTY_APPS = [
     "crispy_forms",
     "allauth",
     "allauth.account",
-    "allauth.socialaccount",
+    'material',
+    # "allauth.socialaccount",
 ]
 
 LOCAL_APPS = [
@@ -191,8 +192,8 @@ FIXTURE_DIRS = (str(APPS_DIR / "fixtures"),)
 # -------------------------------------------------------------------
 
 EMAIL_BACKEND = env(
-    "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
-    # "DJANGO_EMAIL_BACKEND", default='django.core.mail.backends.console.EmailBackend'
+    # "DJANGO_EMAIL_BACKEND", default="django.core.mail.backends.smtp.EmailBackend"
+    "DJANGO_EMAIL_BACKEND", default='django.core.mail.backends.console.EmailBackend'
 )
 EMAIL_TIMEOUT = 5
 
@@ -229,9 +230,12 @@ LOGGING = {
 # django-allauth
 # -------------------------------------------------------------------
 
+
 ACCOUNT_ALLOW_REGISTRATION = env.bool("DJANGO_ACCOUNT_ALLOW_REGISTRATION", True)
-ACCOUNT_AUTHENTICATION_METHOD = "username"
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_ADAPTER = "covidregister.users.adapters.AccountAdapter"
-SOCIALACCOUNT_ADAPTER = "covidregister.users.adapters.SocialAccountAdapter"
+# SOCIALACCOUNT_ADAPTER = "covidregister.users.adapters.SocialAccountAdapter"

@@ -5,7 +5,14 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.db import transaction
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
-from .forms import PatientForm, IllnessInlineFormSet, MedicationInlineFormSet
+from .forms import (
+    PatientForm,
+    PreIllnessFormSet,
+    PreexistingMedicationFormSet,
+    CovidIllnessFormSet,
+    CovidMedicationFormSet,
+    CovidTherapyFormSet,
+)
 from .models import Patient, Disease, Drug
 
 
@@ -28,26 +35,41 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         data = super(PatientCreateView, self).get_context_data(**kwargs)
         if self.request.POST:
-            data["illnesses"] = IllnessInlineFormSet(self.request.POST)
-            data["medication"] = MedicationInlineFormSet(self.request.POST)
+            data["medication"] = PreexistingMedicationFormSet(self.request.POST)
+            data["illnesses"] = PreIllnessFormSet(self.request.POST)
+            data["covid"] = CovidIllnessFormSet(self.request.POST)
+            data["covid_medication"] = CovidMedicationFormSet(self.request.POST)
+            data["covid_therapy"] = CovidTherapyFormSet(self.request.POST)
         else:
-            data["illnesses"] = IllnessInlineFormSet()
-            data["medication"] = MedicationInlineFormSet()
+            data["medication"] = PreexistingMedicationFormSet()
+            data["illnesses"] = PreIllnessFormSet()
+            data["covid"] = CovidIllnessFormSet()
+            data["covid_medication"] = CovidMedicationFormSet()
+            data["covid_therapy"] = CovidTherapyFormSet()
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         illnesses = context["illnesses"]
         medication = context["medication"]
+        covid = context["covid"]
+        covid_medication = context["covid_medication"]
+        covid_therapy = context["covid_therapy"]
         with transaction.atomic():
             form.instance.doctor = self.request.user
             self.object = form.save()
             if illnesses.is_valid():
-                illnesses.instance = self.object
+                # for error in login.errors.values():
+                #     messages.error(request, error[0])
                 illnesses.save()
             if medication.is_valid():
-                medication.instance = self.object
                 medication.save()
+            if covid.is_valid():
+                covid.save()
+            if covid_medication.is_valid():
+                covid_medication.save()
+            if covid_therapy.is_valid():
+                covid_therapy.save()
         return super(PatientCreateView, self).form_valid(form)
 
     def get_success_url(self):
@@ -63,28 +85,43 @@ class PatientUpdateView(LoginRequiredMixin, UpdateView):
         data = super(PatientUpdateView, self).get_context_data(**kwargs)
         obj = get_object_or_404(Patient, pk=self.object.pk)
         if self.request.POST:
-            data["illnesses"] = IllnessInlineFormSet(self.request.POST, instance=obj)
-            data["medication"] = MedicationInlineFormSet(
+            data["medication"] = PreexistingMedicationFormSet(
                 self.request.POST, instance=obj
             )
+            data["illnesses"] = PreIllnessFormSet(self.request.POST, instance=obj)
+            data["covid"] = CovidIllnessFormSet(self.request.POST, instance=obj)
+            data["covid_medication"] = CovidMedicationFormSet(
+                self.request.POST, instance=obj
+            )
+            data["covid_therapy"] = CovidTherapyFormSet(instance=obj)
         else:
-            data["illnesses"] = IllnessInlineFormSet(instance=obj)
-            data["medication"] = MedicationInlineFormSet(instance=obj)
+            data["medication"] = PreexistingMedicationFormSet(instance=obj)
+            data["illnesses"] = PreIllnessFormSet(instance=obj)
+            data["covid"] = CovidIllnessFormSet(instance=obj)
+            data["covid_medication"] = CovidMedicationFormSet(instance=obj)
+            data["covid_therapy"] = CovidTherapyFormSet(instance=obj)
         return data
 
     def form_valid(self, form):
         context = self.get_context_data()
         illnesses = context["illnesses"]
         medication = context["medication"]
+        covid = context["covid"]
+        covid_medication = context["covid_medication"]
+        covid_therapy = context["covid_therapy"]
         with transaction.atomic():
             form.instance.doctor = self.request.user
             self.object = form.save()
             if illnesses.is_valid():
-                illnesses.instance = self.object
                 illnesses.save()
             if medication.is_valid():
-                medication.instance = self.object
                 medication.save()
+            if covid.is_valid():
+                covid.save()
+            if covid_medication.is_valid():
+                covid_medication.save()
+            if covid_therapy.is_valid():
+                covid_therapy.save()
         return super(PatientUpdateView, self).form_valid(form)
 
     def get_success_url(self):
