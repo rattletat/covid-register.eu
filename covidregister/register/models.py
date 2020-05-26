@@ -106,7 +106,7 @@ class PreexistingIllness(TimeStampedModel):
 
 class CovidIllness(TimeStampedModel):
     patient = models.OneToOneField(Patient, on_delete=models.CASCADE)
-    disease = models.ForeignKey(Disease, models.PROTECT)
+    disease = models.ForeignKey(Disease, models.PROTECT, null=True, blank=True)
 
     start = models.DateField("Start of symptoms", null=True, blank=True)
     end = models.DateField("End of symptoms", null=True, blank=True)
