@@ -6,6 +6,20 @@
 
 <br>
 
+{% if user.is_authenticated %}
+
+Here are some useful links:
+
+<ul>
+  <li><a href="{% url "users:update" %}">Your Profile Details</a>.</li>
+  <li><a href="{% url "register:list" %}">Your Patients</a>.</li>
+</ul>
+
+
+{% else %}
+
 Start by <a href="{% url "account_signup" %}">creating an account</a>.
+
+{% endif %}
 
 {% endblock %}
