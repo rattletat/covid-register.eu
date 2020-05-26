@@ -70,3 +70,10 @@ span.select2-selection__placeholder {
 /* body { */
 /*     background: #eefffe !important; */
 /* } */
+
+.buttonHolder {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}

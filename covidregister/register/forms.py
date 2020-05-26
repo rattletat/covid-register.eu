@@ -20,6 +20,7 @@ from crispy_forms.layout import (
     Row,
     HTML,
     Submit,
+    ButtonHolder,
 )
 from .custom_layout_object import Formset
 import re
@@ -268,11 +269,11 @@ class PatientForm(forms.ModelForm):
                 ),
                 Fieldset("Therapy during COVID infection", Formset("covid_therapy")),
                 HTML("<br>"),
-                Div(
+                ButtonHolder(
                     HTML(
-                        '<a class="btn btn-danger col-md-6" href={% url "register:list" %}>Cancel</a>'
+                        '<a class="btn btn-danger col-md-4 mr-1" href={% url "register:list" %}>Cancel</a>'
                     ),
-                    Submit("Save", "Save", css_class="btn-primary col-md-6"),
+                    Submit("Save", "Save", css_class="btn-primary col-md-4"),
                     css_class="form-row",
                 ),
             )
