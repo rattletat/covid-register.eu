@@ -60,19 +60,19 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
             obj.doctor = self.request.user
             obj.save()
             if illnesses.is_valid():
-                illnesses.patient = obj
+                illnesses.instance = obj
                 illnesses.save()
             if medication.is_valid():
-                medication.patient = obj
+                medication.instance = obj
                 medication.save()
             if covid.is_valid():
-                covid.patient = obj
+                covid.instance = obj
                 covid.save()
             if covid_medication.is_valid():
-                covid_medication.patient = obj
+                covid_medication.instance = obj
                 covid_medication.save()
             if covid_therapy.is_valid():
-                covid_therapy.patient = obj
+                covid_therapy.instance = obj
                 covid_therapy.save()
         return super(PatientCreateView, self).form_valid(form)
 
