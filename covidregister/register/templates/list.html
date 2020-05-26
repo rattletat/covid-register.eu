@@ -22,8 +22,8 @@
                 <td class="d-none d-md-table-cell">{{ patient.created | date }}</td>
                 <td class="d-none d-lg-table-cell">{{ patient.modified | date }}</td>
                 <td>{{ patient.identifer }}</td>
-                <td class="d-none d-sm-table-cell">{{ patient.birth_year }}</td>
-                <td class="d-none d-sm-table-cell">{{ patient.get_sex_display }}</td>
+                <td class="d-none d-sm-table-cell">{{ patient.birth_year | default:""}}</td>
+                <td class="d-none d-sm-table-cell">{{ patient.get_sex_display | default:""}}</td>
                 <td>{{ patient.get_status_display }}</td>
                 <td>
 

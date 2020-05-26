@@ -56,19 +56,23 @@ class PatientCreateView(LoginRequiredMixin, CreateView):
         covid_medication = context["covid_medication"]
         covid_therapy = context["covid_therapy"]
         with transaction.atomic():
-            form.instance.doctor = self.request.user
-            self.object = form.save()
+            self.object = obj = form.save(commit=False)
+            obj.doctor = self.request.user
+            obj.save()
             if illnesses.is_valid():
-                # for error in login.errors.values():
-                #     messages.error(request, error[0])
+                illnesses.patient = obj
                 illnesses.save()
             if medication.is_valid():
+                medication.patient = obj
                 medication.save()
             if covid.is_valid():
+                covid.patient = obj
                 covid.save()
             if covid_medication.is_valid():
+                covid_medication.patient = obj
                 covid_medication.save()
             if covid_therapy.is_valid():
+                covid_therapy.patient = obj
                 covid_therapy.save()
         return super(PatientCreateView, self).form_valid(form)
 
@@ -93,7 +97,9 @@ class PatientUpdateView(LoginRequiredMixin, UpdateView):
             data["covid_medication"] = CovidMedicationFormSet(
                 self.request.POST, instance=obj
             )
-            data["covid_therapy"] = CovidTherapyFormSet(instance=obj)
+            data["covid_therapy"] = CovidTherapyFormSet(
+                self.request.POST, instance=obj
+            )
         else:
             data["medication"] = PreexistingMedicationFormSet(instance=obj)
             data["illnesses"] = PreIllnessFormSet(instance=obj)
