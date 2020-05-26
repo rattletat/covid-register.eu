@@ -1,69 +1,71 @@
 {% extends "base.html" %} {% block content %}
 <h1>Your Patients</h1>
 
-<table class="table table-hover table-striped table-responsive" id="exercises">
-    <thead class="thead-dark">
-        <tr id="table-header">
-            <th scope="col">#</th>
-            <th scope="col">Created on</th>
-            <th scope="col">Last modified</th>
-            <th scope="col">Patient ID</th>
-            <th scope="col">Year of birth</th>
-            <th scope="col">Sex</th>
-            <th scope="col">Status</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        {% if object_list %} {% for patient in object_list %}
-        <tr class="table-default">
-            <td scope="row">{{ forloop.counter0 | add:page_obj.start_index }}</td>
-            <td>{{ patient.created | date }}</td>
-            <td class="d-none d-lg-block">{{ patient.modified | date }}</td>
-            <td>{{ patient.identifer }}</td>
-            <td>{{ patient.birth_year }}</td>
-            <td>{{ patient.get_sex_display }}</td>
-            <td>{{ patient.get_status_display }}</td>
-            <td>
+<div class="container centering" align="center">
+    <table class="table table-hover table-striped" id="exercises">
+        <thead class="thead-dark">
+            <tr id="table-header">
+                <th scope="col">#</th>
+                <th scope="col" class="d-none d-md-table-cell">Created on</th>
+                <th scope="col" class="d-none d-lg-table-cell">Last modified</th>
+                <th scope="col">Patient ID</th>
+                <th scope="col" class="d-none d-sm-table-cell">Year of birth</th>
+                <th scope="col" class="d-none d-sm-table-cell">Sex</th>
+                <th scope="col">Status</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if object_list %} {% for patient in object_list %}
+            <tr class="table-default">
+                <td scope="row">{{ forloop.counter0 | add:page_obj.start_index }}</td>
+                <td class="d-none d-md-table-cell">{{ patient.created | date }}</td>
+                <td class="d-none d-lg-table-cell">{{ patient.modified | date }}</td>
+                <td>{{ patient.identifer }}</td>
+                <td class="d-none d-sm-table-cell">{{ patient.birth_year }}</td>
+                <td class="d-none d-sm-table-cell">{{ patient.get_sex_display }}</td>
+                <td>{{ patient.get_status_display }}</td>
+                <td>
 
-                <div class="btn-group" role="group">
-                    <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Action
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                        <a class="dropdown-item text-primary" href="{% url 'register:update' pk=patient.pk %}">Update</a>
-                        <a class="dropdown-item text-danger" href="{% url 'register:delete' pk=patient.pk %}">Delete</a>
+                    <div class="btn-group" role="group">
+                        <button id="btnGroupDrop1" type="button" class="btn btn-secondary btn-sm dropdown-toggle"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                            <a class="dropdown-item text-primary"
+                                href="{% url 'register:update' pk=patient.pk %}">Update</a>
+                            <a class="dropdown-item text-danger"
+                                href="{% url 'register:delete' pk=patient.pk %}">Delete</a>
+                        </div>
                     </div>
-                </div>
-            </td>
-        </tr>
-        {% endfor %} {% endif %}
-    </tbody>
-</table>
+                </td>
+            </tr>
+            {% endfor %} {% endif %}
+        </tbody>
+    </table>
 
-{% if object_list %}
-<div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-        <a href="?page=1">&laquo; first</a>
-        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
+    {% if object_list %}
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
 
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
         </span>
+    </div>
+    {% endif %}
 
-        {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">next</a>
-        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-{% endif %}
-
-<div align="center">
     <a class="btn btn-outline-primary secondary" align="right" href="{% url 'register:create' %}">New Entry</a>
-</div>
 
+</div>
 {% endblock %}

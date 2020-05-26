@@ -184,6 +184,10 @@ class CovidTherapyForm(forms.ModelForm):
     class Meta:
         model = CovidTherapy
         fields = ("therapy_form", "start", "end")
+        widgets = {
+            "start": forms.widgets.DateInput(attrs={"type": "date"}),
+            "end": forms.widgets.DateInput(attrs={"type": "date"}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
