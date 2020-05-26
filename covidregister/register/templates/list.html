@@ -19,7 +19,7 @@
         <tr class="table-default">
             <td scope="row">{{ forloop.counter0 | add:page_obj.start_index }}</td>
             <td>{{ patient.created | date }}</td>
-            <td>{{ patient.modified | date }}</td>
+            <td class="d-none d-lg-block">{{ patient.modified | date }}</td>
             <td>{{ patient.identifer }}</td>
             <td>{{ patient.birth_year }}</td>
             <td>{{ patient.get_sex_display }}</td>
